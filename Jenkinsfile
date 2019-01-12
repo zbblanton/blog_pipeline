@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        //openfaasPass = credentials('openfaas-pass')
-    }
     stages {
         stage('Clone Blog Repo') {
             steps {
