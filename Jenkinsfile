@@ -33,6 +33,7 @@ pipeline {
         stage('Deploy New Function') {
             steps {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 echo 'Im sure it worked.'
 =======
                 sh '''
@@ -50,6 +51,24 @@ pipeline {
                     	    }
                 	    }'
                 '''
+=======
+                script {
+                    reqJSON = '''
+                    {
+                        "service": "blog",
+                        "image": "localhost:5000/bt-blog",
+                        "labels": {
+                            "com.openfaas.scale.zero": "true"
+                        }
+                    }
+                    '''
+                    resp = sh(returnStdout: true, script: "curl -o /dev/null -s -w '%{http_code}' -X PUT http://192.168.0.10:31112/system/functions -H 'authorization: Basic " + env.OPENFAAS_PASS + "' -d '" + reqJSON + "'").trim()
+                    if (resp != "200" && resp != "201" && resp != "202") {
+                        error("Updating function failed. Status code: " + resp)
+                    }
+                    echo resp
+                }
+>>>>>>> 9f41f91... Added curl check for function update
             }
         }
         stage('Clean Workspacee') {
